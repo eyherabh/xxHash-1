@@ -139,8 +139,8 @@ typedef struct _U64_S
 #  pragma pack(pop)
 #endif
 
-#define A32(x) (((U32_S *)(x))->v)
-#define A64(x) (((U64_S *)(x))->v)
+#define A32(x) (((const U32_S *)(x))->v)
+#define A64(x) (((const U64_S *)(x))->v)
 
 
 //***************************************
@@ -206,7 +206,7 @@ FORCE_INLINE U64 XXH_swap64 (U64 x)
 typedef enum { XXH_bigEndian=0, XXH_littleEndian=1 } XXH_endianess;
 #ifndef XXH_CPU_LITTLE_ENDIAN   // It is possible to define XXH_CPU_LITTLE_ENDIAN externally, for example using a compiler switch
 static const int one = 1;
-#   define XXH_CPU_LITTLE_ENDIAN   (*(char*)(&one))
+#   define XXH_CPU_LITTLE_ENDIAN   (*(const char*)(&one))
 #endif
 
 
@@ -1082,9 +1082,9 @@ XXH_errorcode XXH32_update (XXH32_state_t* state_in, const void* input, size_t l
 
 FORCE_INLINE U32 XXH32_digest_endian (const XXH32_state_t* state_in, XXH_endianess endian)
 {
-    XXH_istate32_t* state = (XXH_istate32_t*) state_in;
+    const XXH_istate32_t* state = (const XXH_istate32_t*) state_in;
     const BYTE * p = (const BYTE*)state->memory;
-    BYTE* bEnd = (BYTE*)state->memory + state->memsize;
+    const BYTE* bEnd = (const BYTE*)state->memory + state->memsize;
     U32 h32;
 
     if (state->total_len >= 16)
@@ -1236,9 +1236,9 @@ XXH_errorcode XXH64_update (XXH64_state_t* state_in, const void* input, size_t l
 
 FORCE_INLINE U64 XXH64_digest_endian (const XXH64_state_t* state_in, XXH_endianess endian)
 {
-    XXH_istate64_t * state = (XXH_istate64_t *) state_in;
+    const XXH_istate64_t * state = (const XXH_istate64_t *) state_in;
     const BYTE * p = (const BYTE*)state->memory;
-    BYTE* bEnd = (BYTE*)state->memory + state->memsize;
+    const BYTE* bEnd = (const BYTE*)state->memory + state->memsize;
     U64 h64;
 
     if (state->total_len >= 32)
@@ -1433,7 +1433,7 @@ XXH_errorcode XXH128_update (XXH128_state_t* state_in, const void* input, size_t
 FORCE_INLINE void XXH128_digest_endian (const XXH128_state_t* state_in, XXH_endianess endian, void* out)
 {
 	(void)endian;
-    XXH_istate128_t * state = (XXH_istate128_t *) state_in;
+    const XXH_istate128_t * state = (const XXH_istate128_t *) state_in;
     const BYTE * p = (const BYTE*)state->memory;
     U64 h1, h2;
 
@@ -1642,7 +1642,7 @@ XXH_errorcode XXH256_update (XXH256_state_t* state_in, const void* input, size_t
 FORCE_INLINE void XXH256_digest_endian (const XXH256_state_t* state_in, XXH_endianess endian, void* out)
 {
 	(void)endian;
-    XXH_istate256_t * state = (XXH_istate256_t *) state_in;
+    const XXH_istate256_t * state = (const XXH_istate256_t *) state_in;
     const BYTE * p = (const BYTE*)state->memory;
     U64 h1, h2, h3, h4;
 
